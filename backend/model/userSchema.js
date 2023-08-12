@@ -25,8 +25,8 @@ forgetPasswordToken:{
 },
 forgetPasswordExpiryDate:{
     type:String
-}
-},
+}},
+
 {
     timestamps:true
 })
