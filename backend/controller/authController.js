@@ -56,7 +56,9 @@ if(!email || !password){
         message:"every field is menadatory"
     })
 }
-const user = await userModel
+
+try {
+    const user = await userModel
 .findOne({email})
 .select('+password')
 
@@ -67,6 +69,26 @@ if(!user || !user.password !== password){
     })
 }
 
+const token = user.jwtToken();
+user.password = undefined;
+
+const cookieOption = {
+    maxAge: 24*60*60*1000,
+    httpOnly:true
+}
+
+res.cookie("token", token, cookieOption);
+res.status(200).json({
+    sucess:true,
+    data:user
+})
+
+} catch (error) {
+    res.status(400).json({
+        sucess:false,
+        message:error.message
+    })
+}
 
 }
 
